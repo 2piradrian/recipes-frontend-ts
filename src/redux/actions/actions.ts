@@ -1,4 +1,4 @@
-import { fullUserData } from "./../../types/types";
+import { Tokens, fullUserData } from "./../../types/types";
 import {
 	GET_USER_DATA,
 	NO_FILTER,
@@ -6,6 +6,8 @@ import {
 	FILTER_NAME,
 	SET_USER_DATA,
 	FILTER_CATEGORY,
+	SET_TOKENS,
+	REMOVE_TOKENS,
 } from "../types/types";
 
 export const get_user_data = (email: string) => ({
@@ -40,4 +42,14 @@ export const filter_name = (name: string) => ({
 export const filter_category = (category: string) => ({
 	type: FILTER_CATEGORY,
 	payload: category,
+});
+
+/*  */
+export const set_tokens = (tokens: Tokens) => ({
+	type: SET_TOKENS,
+	payload: tokens,
+});
+
+export const remove_tokens = () => ({
+	type: REMOVE_TOKENS,
 });

@@ -26,12 +26,9 @@ export type recipe = {
 
 export type partialUserData = {
 	email: string;
+	password: string;
 	name: string;
-	surname: string;
 	image: number;
-	categories: Array<string>;
-	favourites: Array<string>;
-	recipes: Array<recipe>;
 };
 export type fullUserData = {
 	uid: string;
@@ -59,4 +56,11 @@ export type Step1 = {
 export type Step2 = {
 	imageUrl: string;
 	description: string;
+};
+
+/*  */
+
+export type Tokens = {
+	access: string;
+	refresh: string;
 };

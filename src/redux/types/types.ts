@@ -6,3 +6,7 @@ export const UPDATE_USER_DATA = "UPDATE_USER_DATA";
 export const NO_FILTER = "NO_FILTER";
 export const FILTER_NAME = "FILTER_NAME";
 export const FILTER_CATEGORY = "FILTER_CATEGORY";
+
+/*  */
+export const SET_TOKENS = "SET_TOKENS";
+export const REMOVE_TOKENS = "REMOVE_TOKENS";

@@ -21,7 +21,7 @@ type Step2 = {
 
 function Register() {
 	const { auth } = useContext(AuthContext);
-	const { createAccountWithEmail } = useAccount();
+	const { register } = useAccount();
 
 	const [formStep, setFormStep] = useState(1);
 	const [dataStep1, setDataStep1] = useState<Step1 | null>();
@@ -43,14 +43,12 @@ function Register() {
 
 		const userData = {
 			email: email,
-			name: username,
-			surname: usersurname,
+			password: password,
+			name: username + " " + usersurname,
 			image: image,
-			recipes: [],
-			categories: [],
-			favourites: [],
 		};
-		createAccountWithEmail(email, password, userData);
+
+		register(userData);
 	};
 
 	if (auth) {
