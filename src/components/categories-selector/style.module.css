@@ -1,0 +1,31 @@
+.categoriesContainer {
+	width: 100%;
+	max-width: 600px;
+	margin: 20px 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.checkbox {
+	margin: 5px;
+	padding: 5px 10px;
+	background: var(--main);
+	color: var(--addornOn);
+	border-radius: 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 5px;
+}
+
+.checkbox > label {
+	width: auto;
+	font-weight: 500;
+}
+
+.checkbox > input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+}

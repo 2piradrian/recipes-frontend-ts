@@ -1,0 +1,21 @@
+.arrowStep {
+	height: 40px;
+	margin: 15px 0px;
+	gap: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 0px;
+	border-bottom: 3px solid var(--main);
+}
+
+.arrowStep > label {
+	width: 35px;
+	font-size: 22px;
+	text-align: center;
+}
+
+.arrowStep > input {
+	border: 0px;
+	background-color: transparent;
+}

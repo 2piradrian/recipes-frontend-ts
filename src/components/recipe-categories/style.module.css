@@ -1,0 +1,21 @@
+.container {
+	width: 100%;
+	margin: 15px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+}
+
+.checkbox {
+	padding: 5px;
+	border-radius: 5px;
+	background: var(--main);
+	font-weight: bold;
+}
+
+.checkbox > label {
+	display: flex;
+	gap: 5px;
+}

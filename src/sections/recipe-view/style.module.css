@@ -1,0 +1,97 @@
+.container {
+	width: 90%;
+	max-width: 1000px;
+	background-color: var(--background);
+	border-radius: 16px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	margin: 24px 10px;
+	overflow: hidden;
+	position: relative;
+	z-index: 50;
+}
+
+.name {
+	font-size: 32px;
+	font-weight: bold;
+	margin: 24px;
+	text-align: center;
+}
+
+.image {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+	object-fit: cover;
+	height: 400px;
+	width: 100%;
+}
+
+.textContainer {
+	padding: 20px 15px;
+}
+
+.time {
+	font-size: 24px;
+	margin: 16px 0px;
+}
+
+.description {
+	font-size: 18px;
+	margin: 16px 0px;
+}
+
+.ingredient-list {
+	margin: 18px 0px;
+}
+
+.ingredient {
+	font-size: 18px;
+	margin: 8px 0px;
+}
+
+.steps {
+	font-size: 18px;
+	margin: 10px 0px;
+}
+
+ul {
+	list-style-position: inside;
+	counter-reset: item 0;
+}
+
+ul li {
+	margin-bottom: 10px;
+	position: relative;
+}
+
+ul li::before {
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-weight: bold;
+}
+
+ol {
+	list-style-position: inside;
+	list-style-type: none;
+	counter-reset: item 0;
+}
+
+ol li {
+	margin-bottom: 10px;
+	padding-left: 20px;
+	position: relative;
+}
+
+ol li::before {
+	content: counter(item) ".";
+	counter-increment: item;
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-weight: bold;
+}
+
+ol li p {
+	margin-left: 30px;
+}

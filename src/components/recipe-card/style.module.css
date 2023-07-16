@@ -1,0 +1,67 @@
+.container {
+	height: 400px;
+	width: 300px;
+	border-radius: 16px;
+	-webkit-box-shadow: 10px 10px 40px -17px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 10px 10px 40px -17px rgba(0, 0, 0, 0.75);
+	box-shadow: 10px 10px 40px -17px rgba(0, 0, 0, 0.75);
+	animation: onCreate 500ms ease-in-out;
+	cursor: pointer;
+}
+
+.info {
+	padding: 10px 15px;
+}
+
+.image {
+	height: 200px;
+	width: 300px;
+	object-fit: cover;
+	border-radius: 16px 16px 0px 0px;
+}
+
+.name {
+	width: 100%;
+	font-size: 24px;
+}
+
+.category {
+	margin: 10px 0px;
+	font-weight: 600;
+}
+
+.description {
+	height: 55px;
+}
+
+.interactive {
+	padding: 0px 10px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.interactive svg {
+	font-size: 22px;
+	cursor: pointer;
+}
+
+.likesContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+@keyframes onCreate {
+	0% {
+		transform: scale(0);
+	}
+
+	80% {
+		transform: scale(1.1);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}

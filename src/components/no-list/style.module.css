@@ -1,0 +1,11 @@
+.empty {
+	width: 100%;
+	padding: 50px 0px;
+	font-size: 22px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.empty > img {
+	height: 250px;
+}

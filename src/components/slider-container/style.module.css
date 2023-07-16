@@ -1,0 +1,36 @@
+.container {
+	min-height: 300px;
+	width: 100%;
+	padding: 35px;
+	gap: 50px;
+	transition: all 1s ease-in-out;
+	display: flex;
+	align-items: center;
+	overflow-x: auto;
+}
+
+.alertContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.alert {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.alert > p {
+	width: 300px;
+	text-align: center;
+	font-weight: 700;
+}
+
+@media (min-width: 1085px) {
+	.container {
+		justify-content: center;
+	}
+}

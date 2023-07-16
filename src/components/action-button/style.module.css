@@ -1,0 +1,21 @@
+.container {
+	height: 60px;
+	width: 60px;
+	border-radius: 50%;
+	background: var(--main);
+	color: var(--addornOn);
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	box-shadow: -11px 23px 138px -35px rgba(0, 0, 0, 0.95);
+	-webkit-box-shadow: -11px 23px 138px -35px rgba(0, 0, 0, 0.95);
+	-moz-box-shadow: -11px 23px 138px -35px rgba(0, 0, 0, 0.95);
+}
+
+.container > svg {
+	font-size: 22px;
+}

@@ -1,0 +1,22 @@
+.container {
+	min-height: 90vh;
+	width: 100%;
+	padding: 30px 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.photo {
+	height: 200px;
+}
+
+.name {
+	margin: 20px 0px;
+	font-size: 28px;
+}
+
+.categories {
+	font-size: 18px;
+}

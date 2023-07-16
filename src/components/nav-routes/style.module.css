@@ -1,0 +1,25 @@
+.routes {
+	margin: 20px 0px;
+	gap: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+}
+/* User Route */
+.user {
+	width: 100%;
+	padding: 0px 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	bottom: 5px;
+	left: 0;
+}
+
+.userimg {
+	height: 30px;
+	min-width: 30px;
+	border-radius: 50%;
+}

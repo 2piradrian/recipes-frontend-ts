@@ -1,0 +1,19 @@
+.stepsContainer {
+	width: 100%;
+	height: 300px;
+	padding: 10px;
+	border: 3px solid var(--main);
+	border-radius: 10px;
+	position: relative;
+	overflow-y: scroll;
+}
+
+.stepsBtn {
+	width: 120px;
+	margin: 5px 10px;
+}
+.stepsBtnContainer {
+	position: absolute;
+	bottom: 25px;
+	z-index: 10;
+}
