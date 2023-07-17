@@ -5,11 +5,11 @@ import { AuthContext } from "../provider/AuthProvider";
 import LoginForm from "../sections/login-form/LoginForm";
 
 function Login() {
-	const { auth } = useContext(AuthContext);
+	const userData = useContext(AuthContext);
 
-	if (auth) {
-		return <Navigate to="/user" replace />;
-	}
+	//if (userData) {
+	//	return <Navigate to="/user" replace />;
+	//}
 
 	return <LoginForm />;
 }

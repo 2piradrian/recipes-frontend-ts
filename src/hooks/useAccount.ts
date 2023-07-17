@@ -4,20 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useContext } from "react";
+import { AuthContext } from "../provider/AuthProvider";
 
 function useAccount() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const auth = useSelector((state: any) => state.auth);
+	const { setSession } = useContext(AuthContext);
 
 	/* Axios instance */
 	const instance = axios.create({
 		baseURL: "http://localhost:3333/auth",
-	});
-	const tokenInstance = axios.create({
-		baseURL: "http://localhost:3333/user",
 	});
 
 	const register = (userData: registerUserData) => {
@@ -45,27 +43,13 @@ function useAccount() {
 		}
 	};
 
-	const loginByToken = async () => {
-		if (!auth.accessToken) return toast("Algo malió sal");
-		try {
-			const response = await tokenInstance.post("/", null, {
-				headers: {
-					Authorization: `Bearer ${auth.accessToken}`,
-				},
-			});
-			dispatch(set_user_data(response.data));
-			return true;
-		} catch (error) {
-			toast("Algo malió sal 😢" + error);
-		}
-	};
-
 	const sendDataToStore = (data: SesionData) => {
 		dispatch(set_user_data(data.user));
 		dispatch(set_tokens(data.tokens));
+		setSession(data.user);
 	};
 
-	return { register, login, loginByToken };
+	return { register, login };
 }
 
 export default useAccount;

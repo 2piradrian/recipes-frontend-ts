@@ -5,20 +5,11 @@ const initialState: Tokens = {
 	refresh: "",
 };
 
-const saveToLocalStorage = (state: Tokens) => {
+const saveToLocalStorage = (state: Tokens | null) => {
 	localStorage.setItem("tokens", JSON.stringify(state));
 };
 
-const getTokensFromLocalStorage = () => {
-	const tokens = localStorage.getItem("tokens");
-	if (tokens) {
-		return JSON.parse(tokens);
-	} else {
-		return initialState;
-	}
-};
-
-export const authReducer = (state: Tokens = getTokensFromLocalStorage(), action: any) => {
+export const authReducer = (state: Tokens | null = initialState, action: any) => {
 	const { payload, type } = action;
 	switch (type) {
 		case "SET_TOKENS":

@@ -20,7 +20,7 @@ type Step2 = {
 };
 
 function Register() {
-	const { auth } = useContext(AuthContext);
+	const userData = useContext(AuthContext);
 	const { register } = useAccount();
 
 	const [formStep, setFormStep] = useState(1);
@@ -51,7 +51,7 @@ function Register() {
 		register(userData);
 	};
 
-	if (auth) {
+	if (userData) {
 		return <Navigate to="/user" replace />;
 	}
 

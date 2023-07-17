@@ -1,62 +1,106 @@
-import { getAuth, User } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { createContext, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import { createContext, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { db } from "../firebase";
-import { set_local_data } from "../redux/actions/actions";
 import { fullUserData } from "../types/types";
+import { toast } from "react-hot-toast";
+import axios from "axios";
+import { set_tokens, set_user_data } from "../redux/actions/actions";
 
 type AuthContextType = {
-	auth: User | null;
-	syncUserData: (email: string) => Promise<void>;
+	session: fullUserData | null;
+	setSession: React.Dispatch<React.SetStateAction<fullUserData | null>>;
 };
 
-const initialAuth: User | null = null;
+const initialAuth: fullUserData | null = null;
 
 interface AuthProviderProps {
 	children: React.ReactNode;
 }
 
 const AuthContext = createContext<AuthContextType>({
-	auth: initialAuth,
-	syncUserData: async () => {},
+	session: initialAuth,
+	setSession: () => {},
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const [auth, setAuth] = useState<User | null>(initialAuth);
+	const [session, setSession] = useState<fullUserData | null>(initialAuth);
 	const dispatch = useDispatch();
 
-	/* se trae el documento del usuario y lo almacena en el state */
-	const syncUserData = async (email: string) => {
-		try {
-			const userData = await getUserData(email);
-			dispatch(set_local_data(userData as fullUserData));
-		} catch (error) {
-			toast.error(`Error fetching user data: ${error}`);
+	const tokenInstance = axios.create({
+		baseURL: "http://localhost:3333/user",
+	});
+
+	const refreshTokenInstance = axios.create({
+		baseURL: "http://localhost:3333/auth/refresh-token",
+	});
+
+	const getTokensFromLocalStorage = () => {
+		const tokens = localStorage.getItem("tokens");
+		if (tokens) {
+			return JSON.parse(tokens);
+		} else {
+			return null;
 		}
 	};
 
-	/* hace la consulta a firebase */
-	const getUserData = async (email: string) => {
-		const docSnap = await getDoc(doc(db, "users", email));
-		return docSnap.data();
+	const loginByToken = async (token: string) => {
+		if (!token) return toast("Inicio de sesión requerido 😅");
+		try {
+			const response = await tokenInstance.post("/", null, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			return response.data;
+		} catch (error) {
+			toast("Algo malió sal 😢" + error);
+		}
+	};
+
+	const refreshTokens = async (token: string) => {
+		if (!token) return toast("Inicio de sesión requerido 😅");
+		try {
+			const response = await refreshTokenInstance.post("/", {
+				refreshToken: token,
+			});
+			return response.data;
+		} catch (error) {}
 	};
 
 	useEffect(() => {
-		const unregisterAuthObserver = getAuth().onAuthStateChanged(function (user) {
-			if (user) {
-				setAuth(user);
-				syncUserData(user.email || "");
-			} else {
-				setAuth(null);
-				dispatch(set_local_data(null));
+		const tokens = getTokensFromLocalStorage();
+
+		const checkSession = async () => {
+			// Comprueba si hay un token almacenado en localStorage
+			if (tokens?.accessToken) {
+				try {
+					// Intenta iniciar sesión por token para obtener los datos del usuario
+					const response = await loginByToken(tokens.accessToken);
+					setSession(response); // Actualiza los datos del usuario en el estado
+					console.log("Sesión iniciada por token:", response);
+					dispatch(set_user_data(response)); // Actualiza los datos del usuario en el estado global
+				} catch (error) {
+					// Maneja los errores de inicio de sesión por token
+					console.error("Error al iniciar sesión por token:", error);
+				}
 			}
-		});
-		return () => unregisterAuthObserver();
+		};
+		const refreshSession = async () => {
+			const tokens = getTokensFromLocalStorage();
+			console.log(tokens);
+			if (tokens?.refreshToken) {
+				try {
+					const response = await refreshTokens(tokens.refreshToken);
+					dispatch(set_tokens(response));
+				} catch (error) {
+					console.error("Error al refrescar el token:", error);
+				}
+			}
+		};
+		refreshSession(); // Llama a la función de refresco al cargar el proveedor de autenticación
+		checkSession(); // Llama a la función de comprobación al cargar el proveedor de autenticación
 	}, []);
 
-	return <AuthContext.Provider value={{ auth, syncUserData }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{ session, setSession }}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };
