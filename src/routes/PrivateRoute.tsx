@@ -1,15 +1,22 @@
-import { useContext } from "react";
-import { AuthContext } from "../provider/AuthProvider";
 import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import useAccount from "../hooks/useAccount";
 
 type PrivateRouteProps = {
 	redirectTo?: string;
 };
 
 function PrivateRoute({ redirectTo = "/login" }: PrivateRouteProps) {
-	const { auth } = useContext(AuthContext);
+	const { loginByToken } = useAccount();
 
-	if (!auth) {
+	const userData = useSelector((state: any) => state.userData);
+
+	useEffect(() => {
+		loginByToken();
+	}, [loginByToken, userData]);
+
+	if (!userData.id) {
 		return <Navigate to={redirectTo} replace />;
 	}
 

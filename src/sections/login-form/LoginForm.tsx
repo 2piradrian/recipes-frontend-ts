@@ -6,11 +6,11 @@ import useVerification from "../../hooks/useVerification";
 import "../../styles/forms.css";
 
 function LoginForm() {
-	const { logInWithEmail } = useAccount();
+	const { login } = useAccount();
 	const { SignInSchema } = useVerification();
 
 	const handleSubmit = (values: any) => {
-		logInWithEmail(values.email, values.password);
+		login(values.email, values.password);
 	};
 
 	return (
@@ -38,7 +38,7 @@ function LoginForm() {
 								type="password"
 								id="password"
 								name="password"
-								placeholder="* * * * * * * * * *"
+								placeholder="* * * * * * * * * * * * * *"
 							/>
 							<ErrorMessage name="password" component="small" />
 						</div>

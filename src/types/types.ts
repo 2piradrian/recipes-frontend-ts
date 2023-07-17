@@ -24,14 +24,15 @@ export type recipe = {
 	authorphoto?: string;
 };
 
-export type partialUserData = {
+export type registerUserData = {
 	email: string;
 	password: string;
 	name: string;
 	image: number;
 };
+/* cambiarle el nombre a UserData */
 export type fullUserData = {
-	uid: string;
+	id: string;
 	email: string;
 	name: string;
 	surname: string;
@@ -46,6 +47,7 @@ export type action = {
 	payload: any;
 };
 
+/* mover esto a donde se usa */
 export type Step1 = {
 	title: string;
 	category: string;
@@ -57,8 +59,11 @@ export type Step2 = {
 	imageUrl: string;
 	description: string;
 };
-
 /*  */
+export type SesionData = {
+	user: fullUserData;
+	tokens: Tokens;
+};
 
 export type Tokens = {
 	access: string;
