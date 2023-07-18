@@ -66,6 +66,6 @@ export type SesionData = {
 };
 
 export type Tokens = {
-	access: string;
-	refresh: string;
+	accessToken: string;
+	refreshToken: string;
 };

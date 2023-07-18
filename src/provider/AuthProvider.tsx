@@ -12,8 +12,17 @@ type AuthContextType = {
 	setSession: Dispatch<SetStateAction<Tokens | null>>;
 };
 
+const getTokensFromLocalStorage = () => {
+	const tokens = localStorage.getItem("tokens");
+	if (tokens) {
+		return JSON.parse(tokens);
+	} else {
+		return null;
+	}
+};
+
 const initialUser: fullUserData | null = null;
-const initialSession: Tokens | null = null;
+const initialSession: Tokens | null = getTokensFromLocalStorage();
 
 interface AuthProviderProps {
 	children: React.ReactNode;
@@ -30,8 +39,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [session, setSession] = useState<Tokens | null>(initialSession);
 	const [user, setUser] = useState<fullUserData | null>(initialUser);
 
-	const dispatch = useDispatch();
-
 	const tokenInstance = axios.create({
 		baseURL: "http://localhost:3333/user",
 	});
@@ -42,15 +49,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 	const saveToLocalStorage = (state: Tokens | null) => {
 		localStorage.setItem("tokens", JSON.stringify(state));
-	};
-
-	const getTokensFromLocalStorage = () => {
-		const tokens = localStorage.getItem("tokens");
-		if (tokens) {
-			return JSON.parse(tokens);
-		} else {
-			return null;
-		}
 	};
 
 	const loginByToken = async (token: string) => {
@@ -88,8 +86,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					// Intenta iniciar sesión por token para obtener los datos del usuario
 					const response = await loginByToken(tokens.accessToken);
 					setUser(response); // Actualiza los datos del usuario en el estado
-					setSession(tokens); // Actualiza los tokens en el estado
-					dispatch(set_user_data(response)); // Actualiza los datos del usuario en el estado global
 				} catch (error) {
 					// Borrar tokens de localStorage
 					localStorage.removeItem("tokens");
@@ -98,11 +94,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			}
 		};
 		const refreshSession = async () => {
-			const tokens = getTokensFromLocalStorage();
-			if (tokens?.refreshToken) {
+			if (session?.refreshToken) {
 				try {
-					const response = await refreshTokens(tokens.refreshToken);
-					saveToLocalStorage(response);
+					const response = await refreshTokens(session.refreshToken);
+					setSession(response);
 				} catch (error) {
 					// Borrar tokens de localStorage
 					localStorage.removeItem("tokens");
@@ -112,6 +107,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		refreshSession(); // Llama a la función de refresco al cargar el proveedor de autenticación
 		checkSession(); // Llama a la función de comprobación al cargar el proveedor de autenticación
 	}, []);
+
+	useEffect(() => {
+		saveToLocalStorage(session);
+	}, [session]);
 
 	return (
 		<AuthContext.Provider value={{ user, setUser, session, setSession }}>

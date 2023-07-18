@@ -1,9 +1,9 @@
 import { categories } from "../../data/data";
-import { fullUserData } from "../../types/types";
-import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import style from "./style.module.css";
 import useAccount from "../../hooks/useAccount";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 type Props = {
 	preferred: string[];
@@ -12,12 +12,13 @@ type Props = {
 
 function CategoriesSelector({ preferred, setPreferred }: Props) {
 	const { updatePreferences } = useAccount();
-	const userData: fullUserData = useSelector((state: any) => state.userData);
+
+	const { user } = useContext(AuthContext);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		updatePreferences({
-			...userData,
+			...user!,
 			categories: preferred,
 		});
 		toast.success("Preferencias actualizadas 😎");

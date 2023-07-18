@@ -1,15 +1,12 @@
-import { SesionData, fullUserData, registerUserData } from "./../types/types";
-import { set_tokens, set_user_data } from "./../redux/actions/actions";
+import { fullUserData, registerUserData } from "./../types/types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
+import axios from "axios";
 
 function useAccount() {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const { user, setUser, session, setSession } = useContext(AuthContext);
 
@@ -38,7 +35,10 @@ function useAccount() {
 	const login = async (email: string, password: string) => {
 		try {
 			const response = await instance.post("/login", { email, password });
-			sendDataToStore(response.data);
+
+			setSession(response.data.tokens);
+			setUser(response.data.user);
+
 			toast("Ingreso Exitoso 👌");
 			navigate("/user");
 		} catch (error) {
@@ -50,20 +50,14 @@ function useAccount() {
 		try {
 			const response = await userInstance.put("/", userData, {
 				headers: {
-					Authorization: `Bearer ${1}`,
+					Authorization: `Bearer ${session?.accessToken}`,
 				},
 			});
-			dispatch(set_user_data(response.data));
+			setUser(response.data);
 			toast("Datos actualizados 👌");
 		} catch (error) {
 			toast("Algo malió sal 😢");
 		}
-	};
-
-	const sendDataToStore = (data: SesionData) => {
-		dispatch(set_user_data(data.user));
-		dispatch(set_tokens(data.tokens));
-		setUser(data.user);
 	};
 
 	return { register, login, updatePreferences };

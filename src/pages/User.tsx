@@ -1,19 +1,20 @@
 import { useSelector } from "react-redux";
 import UserProfile from "../sections/user-profile/UserProfile";
 import { fullUserData } from "../types/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../provider/AuthProvider";
 
 function User() {
-	const userData: fullUserData = useSelector((state: any) => state.userData);
+	const { user } = useContext(AuthContext);
 	const [preferred, setPreferred] = useState<Array<string>>([]);
 
 	useEffect(() => {
-		userData.categories ? setPreferred([...userData.categories]) : setPreferred([]);
-	}, [userData]);
+		user!.categories ? setPreferred([...user!.categories]) : setPreferred([]);
+	}, [user]);
 
 	return (
 		<div className="bigcontainer">
-			<UserProfile user={userData} setPreferred={setPreferred} preferred={preferred} />
+			<UserProfile user={user!} setPreferred={setPreferred} preferred={preferred} />
 		</div>
 	);
 }
