@@ -52,7 +52,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			});
 			return response.data;
 		} catch (error) {
-			toast("Algo malió sal 😢" + error);
+			toast("Algo malió sal 😢");
 		}
 	};
 
@@ -63,7 +63,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				refreshToken: token,
 			});
 			return response.data;
-		} catch (error) {}
+		} catch (error) {
+			toast("Algo malió sal 😢");
+		}
 	};
 
 	useEffect(() => {
@@ -76,23 +78,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					// Intenta iniciar sesión por token para obtener los datos del usuario
 					const response = await loginByToken(tokens.accessToken);
 					setSession(response); // Actualiza los datos del usuario en el estado
-					console.log("Sesión iniciada por token:", response);
 					dispatch(set_user_data(response)); // Actualiza los datos del usuario en el estado global
 				} catch (error) {
-					// Maneja los errores de inicio de sesión por token
-					console.error("Error al iniciar sesión por token:", error);
+					// Borrar tokens de localStorage
+					localStorage.removeItem("tokens");
 				}
 			}
 		};
 		const refreshSession = async () => {
 			const tokens = getTokensFromLocalStorage();
-			console.log(tokens);
 			if (tokens?.refreshToken) {
 				try {
 					const response = await refreshTokens(tokens.refreshToken);
 					dispatch(set_tokens(response));
 				} catch (error) {
-					console.error("Error al refrescar el token:", error);
+					// Borrar tokens de localStorage
+					localStorage.removeItem("tokens");
 				}
 			}
 		};

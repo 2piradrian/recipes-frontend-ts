@@ -5,11 +5,11 @@ import { AuthContext } from "../provider/AuthProvider";
 import LoginForm from "../sections/login-form/LoginForm";
 
 function Login() {
-	const userData = useContext(AuthContext);
+	const { session } = useContext(AuthContext);
 
-	//if (userData) {
-	//	return <Navigate to="/user" replace />;
-	//}
+	if (session?.id) {
+		return <Navigate to="/user" replace />;
+	}
 
 	return <LoginForm />;
 }
