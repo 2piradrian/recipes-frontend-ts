@@ -20,7 +20,7 @@ type Step2 = {
 };
 
 function Register() {
-	const { session } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
 	const { register } = useAccount();
 
@@ -52,7 +52,7 @@ function Register() {
 		register(userData);
 	};
 
-	if (session?.id) {
+	if (user?.id) {
 		return <Navigate to="/user" replace />;
 	}
 

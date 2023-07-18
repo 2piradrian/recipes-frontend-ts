@@ -5,9 +5,9 @@ import { AuthContext } from "../provider/AuthProvider";
 import LoginForm from "../sections/login-form/LoginForm";
 
 function Login() {
-	const { session } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
-	if (session?.id) {
+	if (user?.id) {
 		return <Navigate to="/user" replace />;
 	}
 

@@ -1,4 +1,4 @@
-import { SesionData, registerUserData } from "./../types/types";
+import { SesionData, fullUserData, registerUserData } from "./../types/types";
 import { set_tokens, set_user_data } from "./../redux/actions/actions";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -11,11 +11,14 @@ function useAccount() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const { setSession } = useContext(AuthContext);
+	const { user, setUser, session, setSession } = useContext(AuthContext);
 
 	/* Axios instance */
 	const instance = axios.create({
 		baseURL: "http://localhost:3333/auth",
+	});
+	const userInstance = axios.create({
+		baseURL: "http://localhost:3333/user",
 	});
 
 	const register = (userData: registerUserData) => {
@@ -43,13 +46,27 @@ function useAccount() {
 		}
 	};
 
+	const updatePreferences = async (userData: fullUserData) => {
+		try {
+			const response = await userInstance.put("/", userData, {
+				headers: {
+					Authorization: `Bearer ${1}`,
+				},
+			});
+			dispatch(set_user_data(response.data));
+			toast("Datos actualizados 👌");
+		} catch (error) {
+			toast("Algo malió sal 😢");
+		}
+	};
+
 	const sendDataToStore = (data: SesionData) => {
 		dispatch(set_user_data(data.user));
 		dispatch(set_tokens(data.tokens));
-		setSession(data.user);
+		setUser(data.user);
 	};
 
-	return { register, login };
+	return { register, login, updatePreferences };
 }
 
 export default useAccount;

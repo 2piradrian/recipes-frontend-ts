@@ -8,12 +8,9 @@ type PrivateRouteProps = {
 
 function PrivateRoute({ redirectTo = "/login" }: PrivateRouteProps) {
 	/* AuthProvider */
-	const session = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
-	if (!session.session?.id) {
-		{
-			console.log(session);
-		}
+	if (!user?.id) {
 		return <Navigate to={redirectTo} replace />;
 	}
 
