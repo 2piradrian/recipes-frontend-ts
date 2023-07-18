@@ -1,5 +1,4 @@
 import { categories } from "../../data/data";
-import { toast } from "react-hot-toast";
 import style from "./style.module.css";
 import useAccount from "../../hooks/useAccount";
 import { useContext } from "react";
@@ -17,11 +16,11 @@ function CategoriesSelector({ preferred, setPreferred }: Props) {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		console.log(user);
 		updatePreferences({
 			...user!,
 			categories: preferred,
 		});
-		toast.success("Preferencias actualizadas 😎");
 	};
 
 	return (
