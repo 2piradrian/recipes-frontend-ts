@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { recipe, recipeData } from "../../types/types";
+import { recipeData } from "../../types/types";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import useRecipes from "../../hooks/useRecipes";
 import RecipeCard from "../../components/recipe-card/RecipeCard";
@@ -9,7 +9,7 @@ import NoList from "../../components/no-list/NoList";
 import style from "./style.module.css";
 
 function MyRecipesView() {
-	const [userRecipes, setUserRecipes] = useState<Array<recipeData>>([]);
+	const [userRecipes, setUserRecipes] = useState<Array<recipeData> | null>(null);
 	const { getUserRecipes } = useRecipes();
 
 	useEffect(() => {
@@ -27,7 +27,9 @@ function MyRecipesView() {
 			) : (
 				<Loader />
 			)}
-			{!userRecipes?.length ? <NoList text="Vaya, aun no has subido recetas..." /> : null}
+			{userRecipes != null && !userRecipes?.length ? (
+				<NoList text="Vaya, aun no has subido recetas..." />
+			) : null}
 			<ActionButton content={<MdOutlineLibraryAdd />} route="/editor" />
 		</div>
 	);

@@ -7,13 +7,12 @@ import useRecipes from "../../hooks/useRecipes";
 import style from "./style.module.css";
 
 function FavouritesView() {
-	const [favs, setFavs] = useState<Array<recipeData>>([]);
+	const [favs, setFavs] = useState<Array<recipeData> | null>(null);
 	const { getLikedRecipes } = useRecipes();
 
 	useEffect(() => {
 		const getAyncFavourites = async () => {
 			const recipes = await getLikedRecipes();
-			console.log(recipes);
 			setFavs(recipes as unknown as Array<recipeData>);
 		};
 		getAyncFavourites();
@@ -22,7 +21,9 @@ function FavouritesView() {
 	return (
 		<div className={style.container}>
 			{favs ? favs.map((fav) => <RecipeCard key={fav.id} {...fav} />) : <Loader />}
-			{!favs?.length ? <NoList text="Vaya, aun no has dado likes..." /> : null}
+			{favs != null && !favs?.length ? (
+				<NoList text="Vaya, aun no has dado likes..." />
+			) : null}
 		</div>
 	);
 }
