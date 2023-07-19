@@ -4,9 +4,11 @@ import { fullUserData, recipe } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import axios from "axios";
+import useAccount from "./useAccount";
 
 function useRecipes() {
 	const { user, setUser } = useContext(AuthContext);
+	const { updateUserData } = useAccount();
 
 	const navigate = useNavigate();
 
@@ -52,6 +54,25 @@ function useRecipes() {
 		}
 	};
 
+	/* manejador de likes */
+	const manageLike = async (id: string) => {
+		if (!user) {
+			return toast.error("Esta acción es solo para usuarios registrados");
+		}
+		let updatedLikes;
+		const likes = user.favourites;
+
+		if (likes.includes(id!)) {
+			updatedLikes = likes.filter((like: string) => like !== id);
+		} else {
+			updatedLikes = [...likes, id!];
+		}
+		updateUserData({
+			...user,
+			favourites: updatedLikes,
+		});
+	};
+
 	/* actualizar receta */
 	const updateRecipe = async (recipe: recipe, id: string) => {
 		//updateDoc(doc(recipesCollection, id), recipe).then(() =>
@@ -92,28 +113,6 @@ function useRecipes() {
 		//const promises = list.map((id: string) => getRecipeById(id));
 		//const recipes = await Promise.all(promises);
 		//return recipes;
-	};
-
-	/* manejador de likes */
-	const manageLike = async (id: string) => {
-		//if (!user!.favourites) {
-		//	return toast.error("Esta acción es solo para usuarios registrados");
-		//}
-		//let updatedLikes;
-		//const likes = user.favourites;
-		//
-		//if (likes.includes(id!)) {
-		//	updatedLikes = likes.filter((like: string) => like !== id);
-		//} else {
-		//	updatedLikes = [...likes, id!];
-		//}
-		//
-		//dispatch(
-		//	update_user_data({
-		//		...user,
-		//		favourites: updatedLikes,
-		//	})
-		//);
 	};
 
 	return {

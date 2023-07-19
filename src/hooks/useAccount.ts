@@ -60,7 +60,20 @@ function useAccount() {
 		}
 	};
 
-	return { register, login, updatePreferences };
+	const updateUserData = async (userData: fullUserData) => {
+		try {
+			const response = await userInstance.put("/", userData, {
+				headers: {
+					Authorization: `Bearer ${session?.accessToken}`,
+				},
+			});
+			setUser(response.data);
+		} catch (error) {
+			toast("Algo malió sal 😢");
+		}
+	};
+
+	return { register, login, updatePreferences, updateUserData };
 }
 
 export default useAccount;

@@ -16,7 +16,6 @@ function CategoriesSelector({ preferred, setPreferred }: Props) {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log(user);
 		updatePreferences({
 			...user!,
 			categories: preferred,
