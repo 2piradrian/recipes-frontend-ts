@@ -2,11 +2,11 @@ import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
-import { recipe } from "../types/types";
+import { recipe, recipeData } from "../types/types";
 
 function useScroll() {
 	const [lastRecipe, setLastRecipe] = useState<recipe | boolean>(true);
-	const [recipes, setRecipes] = useState<Array<recipe>>([]);
+	const [recipes, setRecipes] = useState<Array<recipeData>>([]);
 
 	const filterData = useSelector((state: any) => state.filterData);
 	const recipesCollection = collection(db, "recipes");

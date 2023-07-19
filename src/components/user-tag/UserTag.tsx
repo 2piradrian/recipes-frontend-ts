@@ -4,14 +4,14 @@ import style from "./style.module.css";
 
 type Props = {
 	author: string;
-	photo: string;
+	photo: number;
 };
 
 function UserTag({ author, photo }: Props) {
 	return (
 		<div className={style.container}>
 			<img
-				src={photoList[parseInt(photo)] || nouser}
+				src={photoList[photo] || nouser}
 				onError={({ currentTarget }) => {
 					currentTarget.onerror = null;
 					currentTarget.src = nouser;

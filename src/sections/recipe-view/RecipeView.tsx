@@ -1,11 +1,11 @@
-import { ingredient, recipe } from "../../types/types";
+import { ingredient, recipe, recipeData } from "../../types/types";
 import { useSelector } from "react-redux";
 import { AiFillEdit } from "react-icons/ai";
 import ActionButton from "../../components/action-button/ActionButton";
 import style from "./style.module.css";
 
 type Props = {
-	recipe: recipe;
+	recipe: recipeData;
 };
 
 function RecipeView({ recipe }: Props) {
@@ -43,7 +43,7 @@ function RecipeView({ recipe }: Props) {
 						</li>
 					))}
 				</ol>
-				{userData.uid === recipe.authoruid ? (
+				{userData.uid === recipe.author.id ? (
 					<ActionButton content={<AiFillEdit />} route={`/editor/${recipe.id}`} />
 				) : null}
 			</div>

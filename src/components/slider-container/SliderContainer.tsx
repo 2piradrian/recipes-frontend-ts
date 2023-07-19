@@ -1,10 +1,10 @@
-import { recipe } from "../../types/types";
+import { recipe, recipeData } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import RecipeCard from "../recipe-card/RecipeCard";
 import style from "./style.module.css";
 
 type Props = {
-	recipes: Array<recipe>;
+	recipes: Array<recipeData>;
 };
 
 function SliderContainer({ recipes }: Props) {
@@ -14,7 +14,7 @@ function SliderContainer({ recipes }: Props) {
 		<div className={style.container}>
 			{recipes ? (
 				recipes.length >= 1 ? (
-					recipes.map((recipe: recipe) => <RecipeCard key={recipe.id!} {...recipe} />)
+					recipes.map((recipe: recipeData) => <RecipeCard key={recipe.id!} {...recipe} />)
 				) : (
 					/* deberia llegar un array vacío */
 					<div className={style.alertContainer}>

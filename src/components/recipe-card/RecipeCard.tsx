@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fullUserData, recipe } from "../../types/types";
+import { fullUserData, recipe, recipeData } from "../../types/types";
 import useRecipes from "../../hooks/useRecipes";
 import UserTag from "../user-tag/UserTag";
 import style from "./style.module.css";
 
-function RecipeCard({ id, name, image, category, description, authorname, authorphoto }: recipe) {
+function RecipeCard({ id, name, image, category, description, author }: recipeData) {
 	const navigate = useNavigate();
 	const { manageLike } = useRecipes();
 	const [liked, setLiked] = useState(false);
@@ -35,7 +35,7 @@ function RecipeCard({ id, name, image, category, description, authorname, author
 				</div>
 			</div>
 			<div className={style.interactive}>
-				<UserTag author={authorname} photo={authorphoto!} />
+				<UserTag author={author.name} photo={author.image!} />
 				<div className={style.likesContainer} onClick={() => manageLike(id!)}>
 					{liked ? <MdFavorite /> : <MdOutlineFavoriteBorder />}
 				</div>

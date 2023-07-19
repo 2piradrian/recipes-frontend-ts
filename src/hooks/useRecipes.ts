@@ -32,6 +32,16 @@ function useRecipes() {
 		}
 	};
 
+	/* trae las recetas creadas por el usuario */
+	const getUserRecipes = async () => {
+		try {
+			const response = await instance.get("/user-recipes/" + user!.id);
+			return response.data;
+		} catch (error: any) {
+			toast("Algo malió sal 😢");
+		}
+	};
+
 	/* actualizar receta */
 	const updateRecipe = async (recipe: recipe, id: string) => {
 		//updateDoc(doc(recipesCollection, id), recipe).then(() =>
@@ -77,6 +87,7 @@ function useRecipes() {
 
 	/* obtener las favoritas o las creadas por el usuario */
 	const getListOfRecipes = async (type: boolean = false) => {
+		/* si es verdadero trae las recetas del usuario, si es falso trae sus favoritas */
 		//const list = (type ? user.recipes : user.favourites) || [];
 		//const promises = list.map((id: string) => getRecipeById(id));
 		//const recipes = await Promise.all(promises);
@@ -107,6 +118,8 @@ function useRecipes() {
 
 	return {
 		createRecipe,
+		getUserRecipes,
+		/*  */
 		getPrincipalRecipes,
 		getRecipeById,
 		updateRecipe,

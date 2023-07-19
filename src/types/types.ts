@@ -9,6 +9,7 @@ export type comment = {
 	content: string;
 };
 
+/* este es para crear la receta */
 export type recipe = {
 	id?: string;
 	name: string;
@@ -19,6 +20,25 @@ export type recipe = {
 	steps: Array<string>;
 	image: string;
 	authorId: string;
+};
+/* este es para las recetas que vienen desde backend */
+export type recipeData = {
+	id?: string;
+	name: string;
+	category: string;
+	time: string;
+	description: string;
+	ingredients: Array<ingredient>;
+	steps: Array<string>;
+	image: string;
+	author: Author;
+};
+
+export type Author = {
+	id: string;
+	name: string;
+	image: number;
+	email: string;
 };
 
 export type registerUserData = {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { recipe } from "../../types/types";
+import { recipe, recipeData } from "../../types/types";
 import { MdOutlineLibraryAdd } from "react-icons/md";
 import useRecipes from "../../hooks/useRecipes";
 import RecipeCard from "../../components/recipe-card/RecipeCard";
@@ -9,13 +9,13 @@ import NoList from "../../components/no-list/NoList";
 import style from "./style.module.css";
 
 function MyRecipesView() {
-	const [userRecipes, setUserRecipes] = useState<Array<recipe>>([]);
+	const [userRecipes, setUserRecipes] = useState<Array<recipeData>>([]);
 	const { getListOfRecipes } = useRecipes();
 
 	useEffect(() => {
 		const getAyncFavourites = async () => {
 			const recipes = await getListOfRecipes(true);
-			setUserRecipes(recipes);
+			setUserRecipes(recipes as unknown as Array<recipeData>);
 		};
 		getAyncFavourites();
 	}, []);
