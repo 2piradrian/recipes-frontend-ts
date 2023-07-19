@@ -7,13 +7,15 @@ import { useSelector } from "react-redux";
 import { photoList } from "../../data/data";
 import nouser from "../../assets/nouser.jpg";
 import style from "./style.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 type Props = {
 	state: boolean;
 };
 
 function NavRoutes({ state }: Props) {
-	const userData = useSelector((state: any) => state.userData);
+	const { user } = useContext(AuthContext);
 
 	return (
 		<>
@@ -27,7 +29,7 @@ function NavRoutes({ state }: Props) {
 				<NavItem
 					icon={
 						<img
-							src={photoList[parseInt(userData.image)] || nouser}
+							src={user ? photoList[user.image] : nouser}
 							onError={({ currentTarget }) => {
 								currentTarget.onerror = null;
 								currentTarget.src = nouser;
