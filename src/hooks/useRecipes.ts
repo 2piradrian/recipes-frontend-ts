@@ -97,36 +97,28 @@ function useRecipes() {
 
 	/* trae las recetas que se muestran en /home */
 	const getPrincipalRecipes = async () => {
-		//const categories = user?.categories;
-		//const last3 = await getDocs(query(recipesCollection, limit(3))).then((snapshot) =>
-		//	snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-		//);
-		//const recommended = await getDocs(
-		//	query(
-		//		recipesCollection,
-		//		limit(3),
-		//		where(
-		//			"category",
-		//			"==",
-		//			categories !== undefined && categories.length > 0
-		//				? categories[Math.floor(Math.random() * categories.length)]
-		//				: null
-		//		)
-		//	)
-		//).then((snapshot) => snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-		//return {
-		//	last3,
-		//	recommended,
-		//};
-	};
+		const last3 = await instance.get("/home/lastest");
+		let recommended;
 
-	/* obtener las favoritas o las creadas por el usuario */
-	const getListOfRecipes = async (type: boolean = false) => {
-		/* si es verdadero trae las recetas del usuario, si es falso trae sus favoritas */
-		//const list = (type ? user.recipes : user.favourites) || [];
-		//const promises = list.map((id: string) => getRecipeById(id));
-		//const recipes = await Promise.all(promises);
-		//return recipes;
+		if (user?.id && session?.accessToken) {
+			const response = await instance.post("/home/recommended", null, {
+				headers: {
+					Authorization: "Bearer " + session!.accessToken,
+				},
+			});
+			recommended = response.data;
+		} else {
+			recommended = [];
+		}
+
+		console.log({
+			last3: last3.data,
+			recommended: recommended,
+		});
+		return {
+			last3: last3.data,
+			recommended: recommended,
+		};
 	};
 
 	return {
@@ -138,7 +130,6 @@ function useRecipes() {
 		/*  */
 		getPrincipalRecipes,
 		updateRecipe,
-		getListOfRecipes,
 	};
 }
 
