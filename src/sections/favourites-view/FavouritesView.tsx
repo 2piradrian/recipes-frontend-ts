@@ -8,11 +8,12 @@ import style from "./style.module.css";
 
 function FavouritesView() {
 	const [favs, setFavs] = useState<Array<recipeData>>([]);
-	const { getListOfRecipes } = useRecipes();
+	const { getLikedRecipes } = useRecipes();
 
 	useEffect(() => {
 		const getAyncFavourites = async () => {
-			const recipes = await getListOfRecipes();
+			const recipes = await getLikedRecipes();
+			console.log(recipes);
 			setFavs(recipes as unknown as Array<recipeData>);
 		};
 		getAyncFavourites();

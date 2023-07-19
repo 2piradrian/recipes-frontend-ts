@@ -7,7 +7,7 @@ import axios from "axios";
 import useAccount from "./useAccount";
 
 function useRecipes() {
-	const { user, setUser } = useContext(AuthContext);
+	const { user, setUser, session } = useContext(AuthContext);
 	const { updateUserData } = useAccount();
 
 	const navigate = useNavigate();
@@ -73,6 +73,20 @@ function useRecipes() {
 		});
 	};
 
+	/* recetas likadas */
+	const getLikedRecipes = async () => {
+		try {
+			const response = await instance.post("/liked", null, {
+				headers: {
+					Authorization: "Bearer " + session!.accessToken,
+				},
+			});
+			return response.data.likedRecipes;
+		} catch (error: any) {
+			toast("Algo malió sal 😢");
+		}
+	};
+
 	/* actualizar receta */
 	const updateRecipe = async (recipe: recipe, id: string) => {
 		//updateDoc(doc(recipesCollection, id), recipe).then(() =>
@@ -118,12 +132,13 @@ function useRecipes() {
 	return {
 		createRecipe,
 		getUserRecipes,
+		manageLike,
+		getRecipeById,
+		getLikedRecipes,
 		/*  */
 		getPrincipalRecipes,
-		getRecipeById,
 		updateRecipe,
 		getListOfRecipes,
-		manageLike,
 	};
 }
 
