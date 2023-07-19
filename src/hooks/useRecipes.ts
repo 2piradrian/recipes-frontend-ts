@@ -32,6 +32,16 @@ function useRecipes() {
 		}
 	};
 
+	/* trae una receta por id */
+	const getRecipeById = async (id: string) => {
+		try {
+			const response = await instance.get("/" + id);
+			return response.data;
+		} catch (error: any) {
+			toast("Algo malió sal 😢");
+		}
+	};
+
 	/* trae las recetas creadas por el usuario */
 	const getUserRecipes = async () => {
 		try {
@@ -73,16 +83,6 @@ function useRecipes() {
 		//	last3,
 		//	recommended,
 		//};
-	};
-
-	/* trae una receta por id */
-	const getRecipeById = async (id: string) => {
-		//const docSnap = await getDoc(doc(db, "recipes", id));
-		//const recipe: recipe = {
-		//	id: docSnap.id,
-		//	...(docSnap.data() as recipe),
-		//};
-		//return recipe;
 	};
 
 	/* obtener las favoritas o las creadas por el usuario */

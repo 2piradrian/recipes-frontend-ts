@@ -10,11 +10,11 @@ import style from "./style.module.css";
 
 function MyRecipesView() {
 	const [userRecipes, setUserRecipes] = useState<Array<recipeData>>([]);
-	const { getListOfRecipes } = useRecipes();
+	const { getUserRecipes } = useRecipes();
 
 	useEffect(() => {
 		const getAyncFavourites = async () => {
-			const recipes = await getListOfRecipes(true);
+			const recipes = await getUserRecipes();
 			setUserRecipes(recipes as unknown as Array<recipeData>);
 		};
 		getAyncFavourites();

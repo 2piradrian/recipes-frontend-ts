@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fullUserData, recipe, recipeData } from "../../types/types";
+import { recipeData } from "../../types/types";
 import useRecipes from "../../hooks/useRecipes";
 import UserTag from "../user-tag/UserTag";
 import style from "./style.module.css";
+import { AuthContext } from "../../provider/AuthProvider";
 
 function RecipeCard({ id, name, image, category, description, author }: recipeData) {
 	const navigate = useNavigate();
 	const { manageLike } = useRecipes();
 	const [liked, setLiked] = useState(false);
-	const userData: fullUserData = useSelector((state: any) => state.userData);
+
+	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
-		setLiked(userData.favourites?.includes(id!));
-	}, [userData]);
+		if (user) {
+			setLiked(user.favourites?.includes(id!));
+		} else {
+			setLiked(false);
+		}
+	}, [user]);
 
 	const setText = (text: string, number: number) => {
 		if (text.length > number) {
