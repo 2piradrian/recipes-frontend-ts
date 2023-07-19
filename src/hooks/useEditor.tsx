@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { ingredient, recipe, Step1, Step2 } from "../types/types";
 import { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import useRecipes from "./useRecipes";
+import { AuthContext } from "../provider/AuthProvider";
 
 function useEditor() {
 	const { id } = useParams();
-	const { updateRecipe, uploadRecipe, getRecipeById } = useRecipes();
+	const { updateRecipe, createRecipe, getRecipeById } = useRecipes();
 
 	const [formStep, setFormStep] = useState(1);
 	const [dataStep1, setDataStep1] = useState<Step1>({
@@ -23,29 +24,30 @@ function useEditor() {
 	const [dataStep3, setDataStep3] = useState<Array<ingredient>>([]);
 	const [dataStep4, setDataStep4] = useState<Array<string>>([]);
 
-	const userData = useSelector((state: any) => state.userData);
+	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
 		if (!id) return;
-		const getRecipeByID = async () => {
-			const recipe = await getRecipeById(id);
-			if (recipe!.authoruid !== userData.uid) return <Navigate to="/user" replace />;
-			/* contruir la receta en los pasos */
-			setDataStep1({
-				title: recipe!.name,
-				category: recipe!.category,
-				estimatedTime: recipe!.time.split(" ")[0],
-				unit: recipe!.time.split(" ")[1],
-			});
-			setDataStep2({
-				imageUrl: recipe!.image,
-				description: recipe!.description,
-			});
-			setDataStep3(recipe!.ingredients);
-			setDataStep4(recipe!.steps);
-		};
-		getRecipeByID();
-	}, [getRecipeById, id, userData]);
+		//const getRecipeByID = async () => {
+		//	const recipe = await getRecipeById(id);
+		//
+		//	if (recipe!.author !== user!.id) return <Navigate to="/user" replace />;
+		//	/* contruir la receta en los pasos */
+		//	setDataStep1({
+		//		title: recipe!.name,
+		//		category: recipe!.category,
+		//		estimatedTime: recipe!.time.split(" ")[0],
+		//		unit: recipe!.time.split(" ")[1],
+		//	});
+		//	setDataStep2({
+		//		imageUrl: recipe!.image,
+		//		description: recipe!.description,
+		//	});
+		//	setDataStep3(recipe!.ingredients);
+		//	setDataStep4(recipe!.steps);
+		//};
+		//getRecipeByID();
+	}, [getRecipeById, id, user]);
 
 	useEffect(() => {
 		const recipe: recipe = buildRecipe();
@@ -54,7 +56,7 @@ function useEditor() {
 			if (id) {
 				updateRecipe(recipe, id);
 			} else {
-				uploadRecipe(recipe);
+				createRecipe(recipe);
 			}
 		}
 	}, [dataStep1, dataStep2, dataStep3, dataStep4, formStep]);
@@ -70,10 +72,7 @@ function useEditor() {
 			image: imageUrl,
 			ingredients: dataStep3!,
 			steps: dataStep4!,
-			comments: [], // ojo no sobreescribir
-			authorname: `${userData.name} ${userData.surname}`,
-			authoruid: userData.uid,
-			authorphoto: userData.image,
+			authorId: user!.id,
 		};
 	};
 

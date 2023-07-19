@@ -17,11 +17,8 @@ export type recipe = {
 	description: string;
 	ingredients: Array<ingredient>;
 	steps: Array<string>;
-	comments: Array<comment>;
 	image: string;
-	authorname: string;
-	authoruid: string;
-	authorphoto?: string;
+	authorId: string;
 };
 
 export type registerUserData = {
