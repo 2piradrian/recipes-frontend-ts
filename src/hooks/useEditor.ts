@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { ingredient, recipe, Step1, Step2 } from "../types/types";
+import { ingredient, recipe, recipeData, Step1, Step2 } from "../types/types";
 import { useEffect } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useRecipes from "./useRecipes";
 import { AuthContext } from "../provider/AuthProvider";
 
@@ -10,27 +10,30 @@ function useEditor() {
 	const { updateRecipe, createRecipe, getRecipeById } = useRecipes();
 
 	const [formStep, setFormStep] = useState(1);
+
 	const [dataStep1, setDataStep1] = useState<Step1>({
 		title: "",
 		category: "",
 		estimatedTime: "",
 		unit: "",
 	});
+
 	const [dataStep2, setDataStep2] = useState<Step2>({
 		imageUrl: "",
 		description: "",
 	});
+
 	const [dataStep3, setDataStep3] = useState<Array<ingredient>>([]);
+
 	const [dataStep4, setDataStep4] = useState<Array<string>>([]);
 
 	const { user } = useContext(AuthContext);
-
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!id) return;
 		const getRecipeByID = async () => {
-			const recipe = await getRecipeById(id);
+			const recipe: recipeData = await getRecipeById(id);
 
 			if (recipe!.author.id !== user!.id) return navigate("/user", { replace: true });
 
@@ -49,11 +52,10 @@ function useEditor() {
 			setDataStep4(recipe!.steps);
 		};
 		getRecipeByID();
-	}, [getRecipeById, id, user]);
+	}, []);
 
 	useEffect(() => {
 		const recipe: recipe = buildRecipe();
-
 		if (formStep === 5) {
 			if (id) {
 				updateRecipe(recipe, id);
@@ -61,7 +63,7 @@ function useEditor() {
 				createRecipe(recipe);
 			}
 		}
-	}, [dataStep1, dataStep2, dataStep3, dataStep4, formStep]);
+	}, [formStep]);
 
 	const buildRecipe = () => {
 		const { title, category, estimatedTime, unit } = dataStep1;

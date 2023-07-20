@@ -19,13 +19,10 @@ function DynamicSteps({ data }: Props) {
 		setCount(count + 1);
 	};
 
-	useEffect(() => {
-		setCount(data.length + 1);
-	}, [data]);
+	const steps = [];
 
-	let steps = [];
 	for (let i = 0; i < count; i++) {
-		steps.push(<StepsInput key={i} id={i} />);
+		steps.push(<StepsInput key={i} id={i} step={data[i]} />);
 	}
 
 	return (

@@ -4,18 +4,16 @@ import FormSelector from "../form-selector/FormSelector";
 type Props = {
 	id: number;
 	ingredient?: any;
-	onDataChange: (id: number, updatedIngredient: any) => void;
 };
 
-function IngredientsInput({ id, ingredient, onDataChange }: Props) {
+function IngredientsInput({ id, ingredient }: Props) {
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
 	) => {
 		if (!ingredient) return;
 
 		const { name, value } = e.target;
-		const updatedIngredient = { ...ingredient, [name]: value };
-		onDataChange(id, updatedIngredient); // Update the parent state with the updated ingredient
+		ingredient[name] = value;
 	};
 
 	return (

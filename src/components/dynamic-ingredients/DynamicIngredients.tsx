@@ -1,43 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IngredientsInput from "../ingredients-input/IngredientsInput";
 import style from "./style.module.css";
 
 type Props = {
-	data: any;
-	onDataChange: (data: any) => void;
+	data: string[];
 };
 
-function DynamicIngredients({ data, onDataChange }: Props) {
+function DynamicIngredients({ data }: Props) {
 	const [count, setCount] = useState(data.length || 1);
 
 	const handleDecrease = () => {
 		if (count > 1) {
 			setCount(count - 1);
-			onDataChange(data.slice(0, count - 1)); // Update the parent state with the new data
 		}
 	};
 
 	const handleIncrease = () => {
 		setCount(count + 1);
-		onDataChange([...data, { cant: "", unit: "", name: "" }]); // Update the parent state with the new data
 	};
 
-	const handleDataChange = (id: number, updatedIngredient: any) => {
-		const newData = [...data];
-		newData[id] = updatedIngredient;
-		onDataChange(newData); // Update the parent state with the updated data
-	};
+	const ingredients = [];
 
-	let ingredients = [];
 	for (let i = 0; i < count; i++) {
-		ingredients.push(
-			<IngredientsInput
-				key={i}
-				id={i}
-				ingredient={data[i]}
-				onDataChange={(id, updatedIngredient) => handleDataChange(id, updatedIngredient)}
-			/>
-		);
+		ingredients.push(<IngredientsInput key={i} id={i} ingredient={data[i] || ""} />);
 	}
 
 	return (

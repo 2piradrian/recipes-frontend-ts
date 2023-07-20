@@ -16,12 +16,16 @@ function Step3({ handleStep, dataStep, data, style }: Props) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget).entries();
 		const inputs = Array.from(formData);
+		/* Cada elemento del nuevo array será un objeto con propiedades "cant", "unit" y "name" */
 		const ingredientArray: any = inputs.reduce(
 			(acc: { [index: number]: any }, [name, value]) => {
+				/* extrae el numero de input, un slice no funcionó para index > 9 */
 				const index = parseInt(name.match(/\d+/)?.[0] || "0");
+				/* crea el objeto */
 				if (!acc[index]) {
 					acc[index] = { cant: "", unit: "", name: "" };
 				}
+				/* Asignar el valor */
 				if (name.startsWith("cant")) {
 					acc[index].cant = value;
 				} else if (name.startsWith("unit")) {
@@ -33,6 +37,7 @@ function Step3({ handleStep, dataStep, data, style }: Props) {
 			},
 			[]
 		);
+
 		const hasEmptyValue = ingredientArray.some((ingredient: ingredient) =>
 			Object.values(ingredient).some((value) => value === "")
 		);
@@ -45,15 +50,10 @@ function Step3({ handleStep, dataStep, data, style }: Props) {
 		}
 	};
 
-	const handleDataChange = (newData: any) => {
-		// Update the parent state with the new data received from DynamicIngredients
-		dataStep(newData);
-	};
-
 	return (
 		<form className="form" onSubmit={(e) => handleSubmit(e)} style={style}>
 			<StepTitle step={3} title="¿Qué ingredientes lleva?" />
-			<DynamicIngredients data={data} onDataChange={handleDataChange} />
+			<DynamicIngredients data={data} />
 			<div className="arrowInputs">
 				<button
 					type="button"
