@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import StepsInput from "../steps-input/StepsInput";
 import style from "./style.module.css";
 
