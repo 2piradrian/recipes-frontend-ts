@@ -19,7 +19,11 @@ function useRecipes() {
 	/* añade la receta a la colección de recetas públicas */
 	const createRecipe = async (recipe: recipe) => {
 		try {
-			const response = await instance.post("/", recipe);
+			const response = await instance.post("/", recipe, {
+				headers: {
+					Authorization: "Bearer " + session!.accessToken,
+				},
+			});
 			const newRecipe = response.data;
 
 			setUser({

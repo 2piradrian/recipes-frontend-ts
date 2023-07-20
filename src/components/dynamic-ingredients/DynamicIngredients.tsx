@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import IngredientsInput from "../ingredients-input/IngredientsInput";
 import style from "./style.module.css";
 
@@ -18,6 +18,10 @@ function DynamicIngredients({ data }: Props) {
 	const handleIncrease = () => {
 		setCount(count + 1);
 	};
+
+	useEffect(() => {
+		setCount(data.length || 1);
+	}, [data]);
 
 	const ingredients = [];
 

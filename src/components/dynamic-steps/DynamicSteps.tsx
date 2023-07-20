@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StepsInput from "../steps-input/StepsInput";
 import style from "./style.module.css";
 
@@ -18,6 +18,10 @@ function DynamicSteps({ data }: Props) {
 	const handleIncrease = () => {
 		setCount(count + 1);
 	};
+
+	useEffect(() => {
+		setCount(data.length || 1);
+	}, [data]);
 
 	const steps = [];
 

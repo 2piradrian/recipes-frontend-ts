@@ -7,6 +7,7 @@ type Props = {
 };
 
 function IngredientsInput({ id, ingredient }: Props) {
+	//
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
 	) => {
