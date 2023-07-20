@@ -1,4 +1,5 @@
 import style from "./style.module.css";
+import { useState } from "react";
 
 type Props = {
 	id: number;
@@ -6,9 +7,11 @@ type Props = {
 };
 
 function StepsInput({ id, step }: Props) {
+	const [stepInput, setStepInput] = useState(step || "");
+
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = e.target;
-		step = value;
+		setStepInput(value);
 	};
 
 	return (
@@ -17,7 +20,7 @@ function StepsInput({ id, step }: Props) {
 			<input
 				placeholder="Que debo hacer ahora?"
 				name={`name${id}`}
-				value={step}
+				value={stepInput}
 				onChange={handleChange}
 			/>
 		</div>
