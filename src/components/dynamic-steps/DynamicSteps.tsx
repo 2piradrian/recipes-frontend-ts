@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StepsInput from "../steps-input/StepsInput";
 import style from "./style.module.css";
 
@@ -7,7 +7,7 @@ type Props = {
 };
 
 function DynamicSteps({ data }: Props) {
-	const [count, setCount] = useState(data.length || 1);
+	const [count, setCount] = useState(data.length + 1);
 
 	const handleDecrease = () => {
 		if (count > 1) {
@@ -19,16 +19,15 @@ function DynamicSteps({ data }: Props) {
 		setCount(count + 1);
 	};
 
+	useEffect(() => {
+		setCount(data.length + 1);
+	}, [data]);
+
 	let steps = [];
-	if (!data.length) {
-		for (let i = 0; i < count; i++) {
-			steps.push(<StepsInput key={i} id={i} />);
-		}
-	} else {
-		steps = data.map((step: string, index: number) => (
-			<StepsInput key={index} id={index} step={step} />
-		));
+	for (let i = 0; i < count; i++) {
+		steps.push(<StepsInput key={i} id={i} />);
 	}
+
 	return (
 		<div className="columnInputs">
 			<div className="dynamicContainer">

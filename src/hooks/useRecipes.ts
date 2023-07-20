@@ -89,10 +89,18 @@ function useRecipes() {
 
 	/* actualizar receta */
 	const updateRecipe = async (recipe: recipe, id: string) => {
-		//updateDoc(doc(recipesCollection, id), recipe).then(() =>
-		//	toast.success("Receta actualizada exitosamente")
-		//);
-		//navigate(`/recipe/${id}`);
+		try {
+			const response = await instance.put("/" + id, recipe, {
+				headers: {
+					Authorization: "Bearer " + session!.accessToken,
+				},
+			});
+			const updatedRecipe = response.data;
+			toast.success("Receta actualizada exitosamente");
+			navigate(`/recipe/${updatedRecipe.id}`);
+		} catch (error: any) {
+			toast("Algo malió sal 😢");
+		}
 	};
 
 	/* trae las recetas que se muestran en /home */
@@ -111,10 +119,6 @@ function useRecipes() {
 			recommended = [];
 		}
 
-		console.log({
-			last3: last3.data,
-			recommended: recommended,
-		});
 		return {
 			last3: last3.data,
 			recommended: recommended,

@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
-import { useSelector } from "react-redux";
 import { ingredient, recipe, Step1, Step2 } from "../types/types";
 import { useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import useRecipes from "./useRecipes";
 import { AuthContext } from "../provider/AuthProvider";
 
@@ -26,27 +25,30 @@ function useEditor() {
 
 	const { user } = useContext(AuthContext);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!id) return;
-		//const getRecipeByID = async () => {
-		//	const recipe = await getRecipeById(id);
-		//
-		//	if (recipe!.author !== user!.id) return <Navigate to="/user" replace />;
-		//	/* contruir la receta en los pasos */
-		//	setDataStep1({
-		//		title: recipe!.name,
-		//		category: recipe!.category,
-		//		estimatedTime: recipe!.time.split(" ")[0],
-		//		unit: recipe!.time.split(" ")[1],
-		//	});
-		//	setDataStep2({
-		//		imageUrl: recipe!.image,
-		//		description: recipe!.description,
-		//	});
-		//	setDataStep3(recipe!.ingredients);
-		//	setDataStep4(recipe!.steps);
-		//};
-		//getRecipeByID();
+		const getRecipeByID = async () => {
+			const recipe = await getRecipeById(id);
+
+			if (recipe!.author.id !== user!.id) return navigate("/user", { replace: true });
+
+			/* contruir la receta en los pasos */
+			setDataStep1({
+				title: recipe!.name,
+				category: recipe!.category,
+				estimatedTime: recipe!.time.split(" ")[0],
+				unit: recipe!.time.split(" ")[1],
+			});
+			setDataStep2({
+				imageUrl: recipe!.image,
+				description: recipe!.description,
+			});
+			setDataStep3(recipe!.ingredients);
+			setDataStep4(recipe!.steps);
+		};
+		getRecipeByID();
 	}, [getRecipeById, id, user]);
 
 	useEffect(() => {

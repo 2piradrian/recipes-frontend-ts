@@ -3,13 +3,15 @@ import { useSelector } from "react-redux";
 import { AiFillEdit } from "react-icons/ai";
 import ActionButton from "../../components/action-button/ActionButton";
 import style from "./style.module.css";
+import { useContext } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 type Props = {
 	recipe: recipeData;
 };
 
 function RecipeView({ recipe }: Props) {
-	const userData = useSelector((state: any) => state.userData);
+	const { user } = useContext(AuthContext);
 
 	const setFormat = (ingredient: ingredient) => {
 		if (ingredient.unit === "a gusto") {
@@ -43,7 +45,7 @@ function RecipeView({ recipe }: Props) {
 						</li>
 					))}
 				</ol>
-				{userData.uid === recipe.author.id ? (
+				{user?.id === recipe.author.id ? (
 					<ActionButton content={<AiFillEdit />} route={`/editor/${recipe.id}`} />
 				) : null}
 			</div>
