@@ -1,18 +1,12 @@
 import { categories } from "../../data/data";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { filter_category, no_filters } from "../../redux/actions/actions";
 import Titles from "../titles/Titles";
 import style from "./style.module.css";
 
-function SearchBar() {
-	const [filter, setFilter] = useState<string | null>();
-	const dispatch = useDispatch();
+type Props = {
+	setFilter: (filter: string | null) => void;
+};
 
-	useEffect(() => {
-		dispatch(filter ? filter_category(filter) : no_filters());
-	}, [filter]);
-
+function SearchBar({ setFilter }: Props) {
 	return (
 		<div className={style.container}>
 			<Titles title="Explora" subtitle="las recetas de la comunidad" />

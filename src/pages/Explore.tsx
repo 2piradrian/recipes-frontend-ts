@@ -5,7 +5,7 @@ import SearchBar from "../components/search-bar/SearchBar";
 import useScroll from "../hooks/useScroll";
 
 function Explore() {
-	const { recipes, handleScroll } = useScroll();
+	const { recipes, setFilter, handleScroll } = useScroll();
 	const filterData = useSelector((state: any) => state.filterData);
 
 	useEffect(() => {
@@ -14,7 +14,7 @@ function Explore() {
 
 	return (
 		<div className="bigcontainer">
-			<SearchBar />
+			<SearchBar setFilter={setFilter} />
 			<div className="wrapcontainer">
 				{recipes.map((recipe) => (
 					<RecipeCard key={recipe.id} {...recipe} />

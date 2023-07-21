@@ -1,55 +1,32 @@
-import { collection, getDocs, limit, orderBy, query, startAfter } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { db } from "../firebase";
-import { recipe, recipeData } from "../types/types";
+import { recipeData } from "../types/types";
+import axios from "axios";
 
 function useScroll() {
-	const [lastRecipe, setLastRecipe] = useState<recipe | boolean>(true);
 	const [recipes, setRecipes] = useState<Array<recipeData>>([]);
+	const [filter, setFilter] = useState<string | null>(null);
+	const [page, setPage] = useState(1);
 
-	const filterData = useSelector((state: any) => state.filterData);
-	const recipesCollection = collection(db, "recipes");
+	const instance = axios.create({
+		baseURL: "http://localhost:3333/recipes/page",
+	});
+
+	const fetchPage = async (pageNumber: number, category: string | null) => {
+		const response = await instance.post("/", {
+			page: pageNumber,
+			pageSize: 5,
+			category: category,
+		});
+		return response.data;
+	};
 
 	const handleScroll = async () => {
 		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 		if (scrollTop + clientHeight >= scrollHeight - 175) {
-			const recipesList = await getLazyRecipes();
+			const recipesList = await fetchPage(page, filter);
+			setPage(page + 1);
 			setRecipes(recipes.concat(...recipesList));
 		}
-	};
-
-	const lazyRecipes = async () => {
-		if (!lastRecipe) return { list: [], lastDoc: false };
-
-		const q = query(
-			recipesCollection,
-			filterData,
-			limit(5),
-			orderBy("description"),
-			startAfter(lastRecipe)
-		);
-
-		const recipesOfTheStep = await getDocs(q).then((snapshot) => {
-			const arrayOfRecipes: any = [];
-			const arrayOfLastRecipes: any = [];
-			snapshot.docs.map((doc) => {
-				const recipeDoc = { id: doc.id, ...doc.data() } as recipe;
-				arrayOfRecipes.push(recipeDoc);
-				arrayOfLastRecipes.push(doc);
-			});
-			return {
-				list: arrayOfRecipes,
-				lastDoc: arrayOfLastRecipes[arrayOfLastRecipes.length - 1],
-			};
-		});
-		return recipesOfTheStep;
-	};
-
-	const getLazyRecipes = async () => {
-		const recipesOfTheStep = await lazyRecipes();
-		setLastRecipe(recipesOfTheStep.lastDoc);
-		return recipesOfTheStep.list;
 	};
 
 	useEffect(() => {
@@ -60,20 +37,15 @@ function useScroll() {
 	}, [handleScroll]);
 
 	useEffect(() => {
-		setLastRecipe(true);
 		setRecipes([]);
-	}, [filterData]);
+		setPage(1);
+		fetchPage(1, filter).then((recipesList) => {
+			setRecipes(recipesList);
+			setPage(page + 1);
+		});
+	}, [filter]);
 
-	useEffect(() => {
-		const updateStates = async () => {
-			setRecipes(await getLazyRecipes());
-		};
-		if (typeof lastRecipe === "boolean" && !recipes.length) {
-			updateStates();
-		}
-	}, [recipes, lastRecipe, filterData]);
-
-	return { recipes, handleScroll };
+	return { recipes, setFilter, handleScroll };
 }
 
 export default useScroll;
