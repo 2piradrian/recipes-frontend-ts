@@ -8,14 +8,16 @@ import axios from "axios";
 function useAccount() {
 	const navigate = useNavigate();
 
-	const { user, setUser, session, setSession } = useContext(AuthContext);
+	const { setUser, session, setSession } = useContext(AuthContext);
 
 	/* Axios instance */
 	const instance = axios.create({
-		baseURL: "http://localhost:3333/auth",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/auth",
+		//baseURL: "http://localhost:3333/auth",
 	});
 	const userInstance = axios.create({
-		baseURL: "http://localhost:3333/user",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/user",
+		//baseURL: "http://localhost:3333/user",
 	});
 
 	const register = (userData: registerUserData) => {

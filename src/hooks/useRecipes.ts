@@ -13,7 +13,8 @@ function useRecipes() {
 	const navigate = useNavigate();
 
 	const instance = axios.create({
-		baseURL: "http://localhost:3333/recipes",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/recipes",
+		//baseURL: "http://localhost:3333/recipes",
 	});
 
 	/* añade la receta a la colección de recetas públicas */

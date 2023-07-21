@@ -8,7 +8,8 @@ function useScroll() {
 	const [page, setPage] = useState(1);
 
 	const instance = axios.create({
-		baseURL: "http://localhost:3333/recipes/page",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/recipes/page",
+		//baseURL: "http://localhost:3333/recipes/page",
 	});
 
 	const fetchPage = async (pageNumber: number, category: string | null) => {

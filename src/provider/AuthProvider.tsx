@@ -38,11 +38,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = useState<fullUserData | null>(initialUser);
 
 	const tokenInstance = axios.create({
-		baseURL: "http://localhost:3333/user",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/user",
+		//baseURL: "http://localhost:3333/user",
 	});
 
 	const refreshTokenInstance = axios.create({
-		baseURL: "http://localhost:3333/auth/refresh-token",
+		baseURL: "https://recipes-app-backend-ts.onrender.com/auth/refresh-token",
+		//baseURL: "http://localhost:3333/auth/refresh-token",
 	});
 
 	const saveToLocalStorage = (state: Tokens | null) => {
