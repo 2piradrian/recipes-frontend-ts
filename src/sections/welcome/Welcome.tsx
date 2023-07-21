@@ -11,7 +11,7 @@ function Welcome({ recipes }: Props) {
 			<Titles title="Novedades" subtitle="recetas de la comunidad" />
 			<SliderContainer recipes={recipes.last3} />
 			<Titles title="Para ti" subtitle="basado en tus categorias favoritas" />
-			<SliderContainer recipes={recipes.recommended} />
+			<SliderContainer recipes={recipes.recommended} needUser />
 		</div>
 	);
 }
