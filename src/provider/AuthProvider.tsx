@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect, Dispatch, SetStateAction } from "react";
-import { useDispatch } from "react-redux";
 import { Tokens, fullUserData } from "../types/types";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { set_user_data } from "../redux/actions/actions";
 
 type AuthContextType = {
 	user: fullUserData | null;

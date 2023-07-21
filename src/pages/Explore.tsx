@@ -6,11 +6,10 @@ import useScroll from "../hooks/useScroll";
 
 function Explore() {
 	const { recipes, setFilter, handleScroll } = useScroll();
-	const filterData = useSelector((state: any) => state.filterData);
 
 	useEffect(() => {
 		handleScroll();
-	}, [filterData]);
+	}, []);
 
 	return (
 		<div className="bigcontainer">
