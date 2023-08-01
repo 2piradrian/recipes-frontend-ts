@@ -5,6 +5,8 @@ import CategoriesSelector from "../../components/categories-selector/CategoriesS
 import nouser from "../../assets/nouser.jpg";
 import ActionButton from "../../components/action-button/ActionButton";
 import style from "./style.module.css";
+import { AuthContext } from "../../provider/AuthProvider";
+import { useContext } from "react";
 
 type Props = {
 	user: fullUserData;
@@ -13,6 +15,7 @@ type Props = {
 };
 
 function UserProfile({ user, setPreferred, preferred }: Props) {
+	const { logout } = useContext(AuthContext);
 	return (
 		<div className={style.container}>
 			<img
@@ -29,7 +32,12 @@ function UserProfile({ user, setPreferred, preferred }: Props) {
 			</h1>
 			<h2 className={style.categories}>Tus preferidos:</h2>
 			<CategoriesSelector setPreferred={setPreferred} preferred={preferred} />
-			<ActionButton content={<IoMdExit />} action={() => {}} />
+			<ActionButton
+				content={<IoMdExit />}
+				action={() => {
+					logout();
+				}}
+			/>
 		</div>
 	);
 }

@@ -9,6 +9,7 @@ type AuthContextType = {
 	setUser: Dispatch<SetStateAction<fullUserData | null>>;
 	session: Tokens | null;
 	setSession: Dispatch<SetStateAction<Tokens | null>>;
+	logout: () => void;
 };
 
 const getTokensFromLocalStorage = () => {
@@ -32,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 	setUser: () => {},
 	session: initialSession,
 	setSession: () => {},
+	logout: () => {},
 });
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -40,6 +42,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 	const saveToLocalStorage = (state: Tokens | null) => {
 		localStorage.setItem("tokens", JSON.stringify(state));
+	};
+
+	const logout = () => {
+		localStorage.removeItem("tokens");
+		setSession(null);
+		setUser(null);
 	};
 
 	const loginByToken = async (token: string) => {
@@ -104,7 +112,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	}, [session]);
 
 	return (
-		<AuthContext.Provider value={{ user, setUser, session, setSession }}>
+		<AuthContext.Provider value={{ user, setUser, session, setSession, logout }}>
 			{children}
 		</AuthContext.Provider>
 	);

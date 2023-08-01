@@ -1,6 +1,4 @@
-import { useSelector } from "react-redux";
 import UserProfile from "../sections/user-profile/UserProfile";
-import { fullUserData } from "../types/types";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 
