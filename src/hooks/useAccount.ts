@@ -3,26 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
-import axios from "axios";
+import { instance } from "../axios/instance";
 
 function useAccount() {
 	const navigate = useNavigate();
 
 	const { setUser, session, setSession } = useContext(AuthContext);
 
-	/* Axios instance */
-	const instance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/auth",
-		//baseURL: "http://localhost:3333/auth",
-	});
-	const userInstance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/user",
-		//baseURL: "http://localhost:3333/user",
-	});
-
 	const register = (userData: registerUserData) => {
 		try {
-			instance.post("/register", userData);
+			instance.post("/auth/register", userData);
 			toast("Ahora hay que ingresar 😅");
 			toast("Usuario creado con éxito 👌");
 			/* wait 1 second */
@@ -36,7 +26,7 @@ function useAccount() {
 
 	const login = async (email: string, password: string) => {
 		try {
-			const response = await instance.post("/login", { email, password });
+			const response = await instance.post("/auth/login", { email, password });
 
 			setSession(response.data.tokens);
 			setUser(response.data.user);
@@ -50,7 +40,7 @@ function useAccount() {
 
 	const updatePreferences = async (userData: fullUserData) => {
 		try {
-			const response = await userInstance.put("/", userData, {
+			const response = await instance.put("/user/", userData, {
 				headers: {
 					Authorization: `Bearer ${session?.accessToken}`,
 				},
@@ -64,7 +54,7 @@ function useAccount() {
 
 	const updateUserData = async (userData: fullUserData) => {
 		try {
-			const response = await userInstance.put("/", userData, {
+			const response = await instance.put("/user/", userData, {
 				headers: {
 					Authorization: `Bearer ${session?.accessToken}`,
 				},

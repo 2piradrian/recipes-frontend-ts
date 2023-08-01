@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, Dispatch, SetStateAction } from "re
 import { Tokens, fullUserData } from "../types/types";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { instance } from "../axios/instance";
 
 type AuthContextType = {
 	user: fullUserData | null;
@@ -37,16 +38,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [session, setSession] = useState<Tokens | null>(initialSession);
 	const [user, setUser] = useState<fullUserData | null>(initialUser);
 
-	const tokenInstance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/user",
-		//baseURL: "http://localhost:3333/user",
-	});
-
-	const refreshTokenInstance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/auth/refresh-token",
-		//baseURL: "http://localhost:3333/auth/refresh-token",
-	});
-
 	const saveToLocalStorage = (state: Tokens | null) => {
 		localStorage.setItem("tokens", JSON.stringify(state));
 	};
@@ -54,7 +45,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const loginByToken = async (token: string) => {
 		if (!token) return toast("Inicio de sesión requerido 😅");
 		try {
-			const response = await tokenInstance.post("/", null, {
+			const response = await instance.post("/user/", null, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -68,7 +59,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const refreshTokens = async (token: string) => {
 		if (!token) return toast("Inicio de sesión requerido 😅");
 		try {
-			const response = await refreshTokenInstance.post("/", {
+			const response = await instance.post("/auth/refresh-token/", {
 				refreshToken: token,
 			});
 			return response.data;

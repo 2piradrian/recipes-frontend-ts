@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import { recipeData } from "../types/types";
 import axios from "axios";
+import { instance } from "../axios/instance";
 
 function useScroll() {
 	const [recipes, setRecipes] = useState<Array<recipeData>>([]);
 	const [filter, setFilter] = useState<string | null>(null);
 	const [page, setPage] = useState(1);
 
-	const instance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/recipes/page",
-		//baseURL: "http://localhost:3333/recipes/page",
-	});
-
 	const fetchPage = async (pageNumber: number, category: string | null) => {
-		const response = await instance.post("/", {
+		const response = await instance.post("/recipes/page/", {
 			page: pageNumber,
 			pageSize: 5,
 			category: category,

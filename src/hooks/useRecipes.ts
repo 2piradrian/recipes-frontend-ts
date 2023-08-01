@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import axios from "axios";
 import useAccount from "./useAccount";
+import { instance } from "../axios/instance";
 
 function useRecipes() {
 	const { user, setUser, session } = useContext(AuthContext);
@@ -12,15 +13,10 @@ function useRecipes() {
 
 	const navigate = useNavigate();
 
-	const instance = axios.create({
-		baseURL: "https://recipes-app-backend-ts.onrender.com/recipes",
-		//baseURL: "http://localhost:3333/recipes",
-	});
-
 	/* añade la receta a la colección de recetas públicas */
 	const createRecipe = async (recipe: recipe) => {
 		try {
-			const response = await instance.post("/", recipe, {
+			const response = await instance.post("/recipes/", recipe, {
 				headers: {
 					Authorization: "Bearer " + session!.accessToken,
 				},
@@ -42,7 +38,7 @@ function useRecipes() {
 	/* trae una receta por id */
 	const getRecipeById = async (id: string) => {
 		try {
-			const response = await instance.get("/" + id);
+			const response = await instance.get("/recipes/" + id);
 			return response.data;
 		} catch (error: any) {
 			toast("Algo malió sal 😢");
@@ -52,7 +48,7 @@ function useRecipes() {
 	/* trae las recetas creadas por el usuario */
 	const getUserRecipes = async () => {
 		try {
-			const response = await instance.get("/user-recipes/" + user!.id);
+			const response = await instance.get("/recipes/user-recipes/" + user!.id);
 			return response.data;
 		} catch (error: any) {
 			toast("Algo malió sal 😢");
@@ -81,7 +77,7 @@ function useRecipes() {
 	/* recetas likadas */
 	const getLikedRecipes = async () => {
 		try {
-			const response = await instance.post("/liked", null, {
+			const response = await instance.post("/recipes/liked", null, {
 				headers: {
 					Authorization: "Bearer " + session!.accessToken,
 				},
@@ -95,7 +91,7 @@ function useRecipes() {
 	/* actualizar receta */
 	const updateRecipe = async (recipe: recipe, id: string) => {
 		try {
-			const response = await instance.put("/" + id, recipe, {
+			const response = await instance.put("/recipes/" + id, recipe, {
 				headers: {
 					Authorization: "Bearer " + session!.accessToken,
 				},
@@ -110,11 +106,11 @@ function useRecipes() {
 
 	/* trae las recetas que se muestran en /home */
 	const getPrincipalRecipes = async () => {
-		const last3 = await instance.get("/home/lastest");
+		const last3 = await instance.get("/recipes/home/lastest");
 		let recommended;
 
 		if (user?.id && session?.accessToken) {
-			const response = await instance.post("/home/recommended", null, {
+			const response = await instance.post("/recipes/home/recommended", null, {
 				headers: {
 					Authorization: "Bearer " + session!.accessToken,
 				},
