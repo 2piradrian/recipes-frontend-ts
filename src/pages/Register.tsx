@@ -46,7 +46,7 @@ function Register() {
 			email: email,
 			password: password,
 			name: username + " " + usersurname,
-			image: image,
+			image: image || 0,
 		};
 
 		register(userData);
